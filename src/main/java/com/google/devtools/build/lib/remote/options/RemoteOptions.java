@@ -672,15 +672,15 @@ public final class RemoteOptions extends CommonRemoteOptions {
   public CircuitBreakerStrategy circuitBreakerStrategy;
 
   @Option(
-          name = "experimental_remote_failure_threshold",
-          defaultValue = "100",
-          documentationCategory = OptionDocumentationCategory.REMOTE,
-          effectTags = {OptionEffectTag.EXECUTION},
-          help =
-              "Sets the allowed number of failures in a specific time window after which it stops calling to the "
-                  + "remote cache/executor. By default the value is 100. Setting this to 0 or negative means "
-                  + "no limitation.")
-  public int remoteFailureThreshold;
+      name = "experimental_remote_failure_rate_threshold",
+      defaultValue = "10",
+      documentationCategory = OptionDocumentationCategory.REMOTE,
+      effectTags = {OptionEffectTag.EXECUTION},
+      converter = Converters.PercentageConverter.class,
+      help =
+          "Sets the allowed number of failure rate in a specific time window after which it stops calling to the "
+              + "remote cache/executor. By default the value is 10. Setting this to 0 means no limitation.")
+  public int remoteFailureRateThreshold;
 
   @Option(
           name = "experimental_remote_failure_window_interval",
@@ -694,6 +694,16 @@ public final class RemoteOptions extends CommonRemoteOptions {
                  + "Following units can be used: Days (d), hours (h), minutes (m), seconds (s), and milliseconds (ms). "
                  + "If the unit is omitted, the value is interpreted as seconds.")
   public Duration remoteFailureWindowInterval;
+
+  @Option(
+      name = "experimental_remote_min_call_count_to_compute_failure_rate",
+      defaultValue = "10",
+      documentationCategory = OptionDocumentationCategory.REMOTE,
+      effectTags = {OptionEffectTag.EXECUTION},
+      converter = Converters.PercentageConverter.class,
+      help =
+          "TODO")
+  public int remoteMinCallCountToComputeFailureRate;
 
   // The below options are not configurable by users, only tests.
   // This is part of the effort to reduce the overall number of flags.
